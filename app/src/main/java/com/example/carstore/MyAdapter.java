@@ -3,6 +3,7 @@ package com.example.carstore;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,11 +31,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(@NonNull  MyViewHolder holder, int position) {
         holder.nameView.setText(items.get(position).getName());
         holder.emailView.setText(items.get(position).getEmail());
-        holder.imageView.setImageResource(items.get(position).getImage());
+        items.get(position).getMainActivity().loadDogImage(holder.imgvw);
     }
 
     @Override
     public int getItemCount() {
         return items.size();
     }
+
+
 }

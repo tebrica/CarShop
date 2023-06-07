@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,97 +24,70 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-    // member variable for holding the ImageView
-    // in which images will be loaded
-    ImageView mDogImageView;
-    Button nextDogButton;
+public  class MainActivity extends AppCompatActivity {
+
+    JSONObject JO;
+    private static UiThread uiThread;
+    JavascriptActivity javascriptActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //javascriptActivity = new JavascriptActivity();
+
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
 
         List<Item> items = new ArrayList<Item>();
-        items.add(new Item("John wick","john.wick@email.com",R.drawable.a));
-        items.add(new Item("Robert j","robert.j@email.com",R.drawable.b));
-        items.add(new Item("James Gunn","james.gunn@email.com",R.drawable.c));
-        items.add(new Item("Ricky tales","rickey.tales@email.com",R.drawable.d));
-        items.add(new Item("Micky mose","mickey.mouse@email.com",R.drawable.e));
-        items.add(new Item("Pick War","pick.war@email.com",R.drawable.f));
-        items.add(new Item("Leg piece","leg.piece@email.com",R.drawable.g));
-        items.add(new Item("Apple Mac","apple.mac@email.com",R.drawable.g));
-        items.add(new Item("John wick","john.wick@email.com",R.drawable.a));
-        items.add(new Item("Robert j","robert.j@email.com",R.drawable.b));
-        items.add(new Item("James Gunn","james.gunn@email.com",R.drawable.c));
-        items.add(new Item("Ricky tales","rickey.tales@email.com",R.drawable.d));
-        items.add(new Item("Micky mose","mickey.mouse@email.com",R.drawable.e));
-        items.add(new Item("Pick War","pick.war@email.com",R.drawable.f));
-        items.add(new Item("Leg piece","leg.piece@email.com",R.drawable.g));
-        items.add(new Item("Apple Mac","apple.mac@email.com",R.drawable.g));
+        items.add(new Item("John wick","john.wick@email.com",this));
+        items.add(new Item("Robert j","robert.j@email.com",this));
+        items.add(new Item("James Gunn","james.gunn@email.com",this));
+        items.add(new Item("Ricky tales","rickey.tales@email.com",this));
+        items.add(new Item("Micky mose","mickey.mouse@email.com",this));
+        items.add(new Item("Pick War","pick.war@email.com",this));
+        items.add(new Item("Leg piece","leg.piece@email.com",this));
+        items.add(new Item("Apple Mac","apple.mac@email.com",this));
+        items.add(new Item("John wick","john.wick@email.com",this));
+        items.add(new Item("Robert j","robert.j@email.com",this));
+        items.add(new Item("James Gunn","james.gunn@email.com",this));
+        items.add(new Item("Ricky tales","rickey.tales@email.com",this));
+        items.add(new Item("Micky mose","mickey.mouse@email.com",this));
+        items.add(new Item("Pick War","pick.war@email.com",this));
+        items.add(new Item("Leg piece","leg.piece@email.com",this));
+        items.add(new Item("Apple Mac","apple.mac@email.com",this));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new MyAdapter(getApplicationContext(),items));
-        mDogImageView = findViewById(R.id.dogImageView);
-        nextDogButton = findViewById(R.id.nextDogButton);
 
-        // attaching on click listener to the button so that `loadDogImage()`
-        // function is called everytime after clicking it.
-        nextDogButton.setOnClickListener(View -> loadDogImage());
-
-        // image of a dog will be loaded once at the start of the app
-        loadDogImage();
     }
-    // function for making a HTTP request using Volley and
-    // inserting the image in the ImageView using Glide library
-    private void loadDogImage() {
+    public void loadDogImage(ImageView imageView) {
 
-        // getting a new volley request queue for making new requests
         RequestQueue volleyQueue = Volley.newRequestQueue(MainActivity.this);
-        // url of the api through which we get random dog images
         String url = "https://dog.ceo/api/breeds/image/random";
 
-        // since the response we get from the api is in JSON, we
-        // need to use `JsonObjectRequest` for parsing the
-        // request response
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                // we are using GET HTTP request method
                 Request.Method.GET,
-                // url we want to send the HTTP request to
                 url,
-                // this parameter is used to send a JSON object to the
-                // server, since this is not required in our case,
-                // we are keeping it `null`
                 null,
 
-                // lambda function for handling the case
-                // when the HTTP request succeeds
                 (Response.Listener<JSONObject>) response -> {
-                    // get the image url from the JSON object
                     String dogImageUrl;
                     try {
                         dogImageUrl = response.getString("message");
-                        // load the image into the ImageView using Glide.
-                        Glide.with(MainActivity.this).load(dogImageUrl).into(mDogImageView);
+                        Glide.with(MainActivity.this).load(dogImageUrl).into(imageView);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    JO = response;
                 },
 
-                // lambda function for handling the case
-                // when the HTTP request fails
                 (Response.ErrorListener) error -> {
-                    // make a Toast telling the user
-                    // that something went wrong
                     Toast.makeText(MainActivity.this, "Some error occurred! Cannot fetch dog image", Toast.LENGTH_LONG).show();
-                    // log the error message in the error stream
+
                     Log.e("MainActivity", "loadDogImage error: ${error.localizedMessage}");
                 }
         );
 
-        // add the json request object created above
-        // to the Volley request queue
         volleyQueue.add(jsonObjectRequest);
     }
 }

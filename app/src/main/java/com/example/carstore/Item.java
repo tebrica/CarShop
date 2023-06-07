@@ -4,12 +4,11 @@ public class Item {
 
     String name;
     String email;
-    int image;
-
-    public Item(String name, String email, int image) {
+    MainActivity MainActivity;
+    public Item(String name, String email, MainActivity MainActivity) {
         this.name = name;
         this.email = email;
-        this.image = image;
+        this.MainActivity = MainActivity;
     }
 
     public String getName() {
@@ -28,11 +27,7 @@ public class Item {
         this.email = email;
     }
 
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
+    public MainActivity getMainActivity() {
+        return MainActivity;
     }
 }

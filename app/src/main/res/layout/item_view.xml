@@ -5,19 +5,11 @@
     android:layout_marginTop="10dp"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:id="@+id/imageview"
-        android:layout_marginRight="10dp"
-        android:layout_centerVertical="true"
-        />
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/name"
-        android:layout_toEndOf="@id/imageview"
+        android:layout_toEndOf="@id/imgvw"
         android:textColor="@color/black"
         android:textSize="20dp"
         tools:text="Name"/>
@@ -26,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/email"
-        android:layout_toEndOf="@id/imageview"
+        android:layout_toEndOf="@id/imgvw"
         android:layout_below="@id/name"
         android:textColor="@color/black"
         tools:text="emial@email.com"/>
@@ -34,9 +26,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@id/imageview"
+        android:layout_below="@id/imgvw"
         android:layout_marginTop="10dp"
         android:background="#DAD8D8"/>
 
+    <ImageView
+        android:id="@+id/imgvw"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true"/>
 
 </RelativeLayout>
