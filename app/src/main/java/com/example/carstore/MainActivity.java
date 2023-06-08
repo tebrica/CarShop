@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 public  class MainActivity extends AppCompatActivity {
 
@@ -35,40 +36,20 @@ public  class MainActivity extends AppCompatActivity {
         String url = "https://www.willhaben.at/iad/gebrauchtwagen/auto/gebrauchtwagenboerse?sfId=fd2febc1-ec72-4158-bca0-0809c470d311&isNavigation=true&DEALER=1&page=1&rows=10&PRICE_TO=10000"; // Replace with the actual URL
         WebCrawler webCrawler = new WebCrawler(this);
         webCrawler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
+
+
+        Timer t = new Timer();
+        ChronJob mTask = new ChronJob(this, webCrawler);
+        t.scheduleAtFixedRate(mTask, 0, 10000);
     }
     public void initiate(List<Item> items){
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new MyAdapter(getApplicationContext(),items));
     }
-    public void loadDogImage(ImageView imageView) {
+    public void loadCarImage(ImageView imageView, String imgUrl) {
 
-        RequestQueue volleyQueue = Volley.newRequestQueue(MainActivity.this);
-        String url = "https://dog.ceo/api/breeds/image/random";
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                url,
-                null,
-
-                (Response.Listener<JSONObject>) response -> {
-                    String dogImageUrl;
-                    try {
-                        dogImageUrl = response.getString("message");
-                        Glide.with(MainActivity.this).load(dogImageUrl).into(imageView);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                },
-
-                (Response.ErrorListener) error -> {
-                    Toast.makeText(MainActivity.this, "Some error occurred! Cannot fetch dog image", Toast.LENGTH_LONG).show();
-
-                    Log.e("MainActivity", "loadDogImage error: ${error.localizedMessage}");
-                }
-        );
-
-        volleyQueue.add(jsonObjectRequest);
+        Glide.with(MainActivity.this).load(imgUrl).into(imageView);
     }
 }
 

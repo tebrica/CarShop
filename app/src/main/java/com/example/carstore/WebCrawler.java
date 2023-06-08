@@ -1,6 +1,7 @@
 package com.example.carstore;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 
 
@@ -13,7 +14,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class WebCrawler extends AsyncTask<String, Void, JSONArray> {
@@ -109,8 +115,12 @@ public class WebCrawler extends AsyncTask<String, Void, JSONArray> {
     @Override
     protected void onPostExecute(JSONArray result) {
         try{
+            SimpleDateFormat outFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
             String heading = "";
             String price = "";
+            String imgUrl = "https://cache.willhaben.at/mmo/";
+            Date inDate = outFormatter.parse("2023-06-08T23:13:00Z");
 
             if (result != null) {
                 List<Item> items = new ArrayList<Item>();
@@ -118,17 +128,27 @@ public class WebCrawler extends AsyncTask<String, Void, JSONArray> {
                 for (int i = 0; i < result.length(); i++) {
                     JSONObject item = result.getJSONObject(i);
 
-                    heading = item.getString("heading");
-                    price = item.getString("price/amount");
+                    try{
+                        heading = item.getString("heading");
+                        price = item.getString("price/amount");
+                        imgUrl += item.getString("all_image_urls").split(";")[0];
+                        inDate = outFormatter.parse(item.getString("published_string"));
+                    } catch (Exception e) {
 
-                    items.add(new Item(heading,price,mainActivity));
+                    }
+                    items.add(new Item(heading, price, imgUrl, mainActivity, inDate));
+
+                    imgUrl = "https://cache.willhaben.at/mmo/";
                 }
 
                 mainActivity.initiate(items);
+
             } else {
                 // Handle error case
             }
         } catch (JSONException e) {
+            throw new RuntimeException(e);
+        } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }

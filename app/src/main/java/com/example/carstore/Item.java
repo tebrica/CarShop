@@ -1,14 +1,20 @@
 package com.example.carstore;
 
+import java.util.Date;
+
 public class Item {
 
     String name;
     String email;
+    String imgUrl;
     MainActivity MainActivity;
-    public Item(String name, String email, MainActivity MainActivity) {
+    private Date time;
+    public Item(String name, String email, String imgUrl,MainActivity MainActivity, Date time) {
         this.name = name;
         this.email = email;
         this.MainActivity = MainActivity;
+        this.imgUrl = imgUrl;
+        this.setTime(time);
     }
 
     public String getName() {
@@ -22,6 +28,9 @@ public class Item {
     public String getEmail() {
         return email;
     }
+    public String getImgUrl() {
+        return imgUrl;
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -29,5 +38,13 @@ public class Item {
 
     public MainActivity getMainActivity() {
         return MainActivity;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
 }

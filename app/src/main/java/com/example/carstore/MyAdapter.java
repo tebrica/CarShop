@@ -31,7 +31,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(@NonNull  MyViewHolder holder, int position) {
         holder.nameView.setText(items.get(position).getName());
         holder.emailView.setText(items.get(position).getEmail());
-        items.get(position).getMainActivity().loadDogImage(holder.imgvw);
+        items.get(position).getMainActivity().loadCarImage(holder.imgvw, items.get(position).getImgUrl());
     }
 
     @Override
