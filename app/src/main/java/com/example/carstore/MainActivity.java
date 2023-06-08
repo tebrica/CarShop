@@ -1,5 +1,6 @@
 package com.example.carstore;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -26,39 +27,19 @@ import java.util.List;
 
 public  class MainActivity extends AppCompatActivity {
 
-    JSONObject JO;
-    private static UiThread uiThread;
-    JavascriptActivity javascriptActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //javascriptActivity = new JavascriptActivity();
-
+        String url = "https://www.willhaben.at/iad/gebrauchtwagen/auto/gebrauchtwagenboerse?sfId=fd2febc1-ec72-4158-bca0-0809c470d311&isNavigation=true&DEALER=1&page=1&rows=10&PRICE_TO=10000"; // Replace with the actual URL
+        WebCrawler webCrawler = new WebCrawler(this);
+        webCrawler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
+    }
+    public void initiate(List<Item> items){
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-
-        List<Item> items = new ArrayList<Item>();
-        items.add(new Item("John wick","john.wick@email.com",this));
-        items.add(new Item("Robert j","robert.j@email.com",this));
-        items.add(new Item("James Gunn","james.gunn@email.com",this));
-        items.add(new Item("Ricky tales","rickey.tales@email.com",this));
-        items.add(new Item("Micky mose","mickey.mouse@email.com",this));
-        items.add(new Item("Pick War","pick.war@email.com",this));
-        items.add(new Item("Leg piece","leg.piece@email.com",this));
-        items.add(new Item("Apple Mac","apple.mac@email.com",this));
-        items.add(new Item("John wick","john.wick@email.com",this));
-        items.add(new Item("Robert j","robert.j@email.com",this));
-        items.add(new Item("James Gunn","james.gunn@email.com",this));
-        items.add(new Item("Ricky tales","rickey.tales@email.com",this));
-        items.add(new Item("Micky mose","mickey.mouse@email.com",this));
-        items.add(new Item("Pick War","pick.war@email.com",this));
-        items.add(new Item("Leg piece","leg.piece@email.com",this));
-        items.add(new Item("Apple Mac","apple.mac@email.com",this));
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new MyAdapter(getApplicationContext(),items));
-
     }
     public void loadDogImage(ImageView imageView) {
 
@@ -78,7 +59,6 @@ public  class MainActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    JO = response;
                 },
 
                 (Response.ErrorListener) error -> {
