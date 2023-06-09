@@ -22,7 +22,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="150dp"
-            android:checked="true"
             android:text="20s"
             android:onClick="onRadioButtonClicked"/>
         <RadioButton android:id="@+id/osv30"

@@ -51,7 +51,7 @@ public  class MainActivity extends AppCompatActivity {
 
         t = new Timer();
         mTask = new ChronJob(this, webCrawler);
-        t.scheduleAtFixedRate(mTask, 0, 20000);
+        //t.scheduleAtFixedRate(mTask, 0, 20000);
         drawerLayout = findViewById(R.id.my_drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.nav_open, R.string.nav_close);
 
