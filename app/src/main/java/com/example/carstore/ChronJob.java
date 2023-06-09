@@ -16,9 +16,16 @@ public class ChronJob extends TimerTask {
 
     @Override
     public void run() {
-        Log.d("CHRON", "10 SECONDS PASSED!!!!!!!!!!!");
+        Log.d("RUNNNNNNIIIIING", "30");
         String url = "https://www.willhaben.at/iad/gebrauchtwagen/auto/gebrauchtwagenboerse?sfId=fd2febc1-ec72-4158-bca0-0809c470d311&isNavigation=true&DEALER=1&page=1&rows=10&PRICE_TO=10000"; // Replace with the actual URL
         WebCrawler webCrawler = new WebCrawler(mainActivity);
         webCrawler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
+
+        if (mainActivity.call){
+            MakeACall();
+        }
+    }
+    public void MakeACall(){
+        return;
     }
 }
