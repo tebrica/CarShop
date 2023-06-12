@@ -70,8 +70,6 @@ public class WebCrawler extends AsyncTask<String, Void, JSONArray> {
 
                 JSONArray returnArray = new JSONArray();
 
-
-
                 for (int i = 0; i < advertSummaryList.length(); i++) {
                     JSONObject returnObj = advertSummaryList.getJSONObject(i);
                     JSONArray attributeList = returnObj.getJSONObject("attributes").getJSONArray("attribute");
@@ -119,11 +117,13 @@ public class WebCrawler extends AsyncTask<String, Void, JSONArray> {
 
             String heading = "";
             String price = "";
+            String url = "https://www.willhaben.at/iad/";
             String imgUrl = "https://cache.willhaben.at/mmo/";
             Date inDate = outFormatter.parse("2023-06-08T23:13:00Z");
 
             if (result != null) {
                 List<Item> items = new ArrayList<Item>();
+                List<String> compare = new ArrayList<String>();
 
                 for (int i = 0; i < result.length(); i++) {
                     JSONObject item = result.getJSONObject(i);
@@ -133,15 +133,18 @@ public class WebCrawler extends AsyncTask<String, Void, JSONArray> {
                         price = item.getString("price/amount");
                         imgUrl += item.getString("all_image_urls").split(";")[0];
                         inDate = outFormatter.parse(item.getString("published_string"));
+                        url += item.getString("seo_url").split(";")[0];
                     } catch (Exception e) {
 
                     }
-                    items.add(new Item(heading, price, imgUrl, mainActivity, inDate));
+                    items.add(new Item(heading, price, imgUrl, mainActivity, inDate, url));
+                    compare.add(heading);
 
+                    url = "https://www.willhaben.at/iad/";
                     imgUrl = "https://cache.willhaben.at/mmo/";
                 }
 
-                mainActivity.initiate(items);
+                mainActivity.initiate(items, compare);
 
             } else {
                 // Handle error case

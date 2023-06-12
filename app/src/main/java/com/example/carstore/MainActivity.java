@@ -39,6 +39,7 @@ public  class MainActivity extends AppCompatActivity {
     WebCrawler webCrawler;
     public Boolean call = true;
     EditText edittext;
+    List<String> compare;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,10 +61,19 @@ public  class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-    public void initiate(List<Item> items){
+    public void initiate(List<Item> items, List<String> compare){
+        try{
+            if(this.compare.containsAll(compare)){
+                Log.d("TIME", "ISTOOOOOOOOOOOOO");
+                return;
+            }
+        }catch (Exception e){
+            Log.d("TIME", e.getMessage());
+        }
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new MyAdapter(getApplicationContext(),items));
+        recyclerView.setAdapter(new MyAdapter(getApplicationContext(),items, this));
+        this.compare = compare;
     }
     public void loadCarImage(ImageView imageView, String imgUrl) {
 
@@ -92,7 +102,7 @@ public  class MainActivity extends AppCompatActivity {
                     t.cancel();
                     t = new Timer();
                     mTask = new ChronJob(this, webCrawler);
-                    t.scheduleAtFixedRate(mTask, 0, 10000);
+                    t.scheduleAtFixedRate(mTask, 0, 1000);
                 }catch (Exception e){}
             }
         }
@@ -104,7 +114,7 @@ public  class MainActivity extends AppCompatActivity {
                     t.cancel();
                     t = new Timer();
                     mTask = new ChronJob(this, webCrawler);
-                    t.scheduleAtFixedRate(mTask, 0, 15000);
+                    t.scheduleAtFixedRate(mTask, 0, 1500);
                 }catch (Exception e){}
             }
         }
@@ -116,7 +126,7 @@ public  class MainActivity extends AppCompatActivity {
                     t.cancel();
                     t = new Timer();
                     mTask = new ChronJob(this, webCrawler);
-                    t.scheduleAtFixedRate(mTask, 0, 20000);
+                    t.scheduleAtFixedRate(mTask, 0, 2000);
                 }catch (Exception e){}
             }
         }
@@ -128,7 +138,16 @@ public  class MainActivity extends AppCompatActivity {
                     t.cancel();
                     t = new Timer();
                     mTask = new ChronJob(this, webCrawler);
-                    t.scheduleAtFixedRate(mTask, 0, 30000);
+                    t.scheduleAtFixedRate(mTask, 0, 3000);
+                }catch (Exception e){}
+            }
+        }
+        else
+        if(view.getId() == R.id.osvIsk){
+            Log.d("TIME", "Isk");
+            if (checked){
+                try{
+                    t.cancel();
                 }catch (Exception e){}
             }
         }

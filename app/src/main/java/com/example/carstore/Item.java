@@ -9,12 +9,14 @@ public class Item {
     String imgUrl;
     MainActivity MainActivity;
     private Date time;
-    public Item(String name, String email, String imgUrl,MainActivity MainActivity, Date time) {
+    String url;
+    public Item(String name, String email, String imgUrl,MainActivity MainActivity, Date time, String url) {
         this.name = name;
         this.email = email;
         this.MainActivity = MainActivity;
         this.imgUrl = imgUrl;
         this.setTime(time);
+        this.url = url;
     }
 
     public String getName() {
