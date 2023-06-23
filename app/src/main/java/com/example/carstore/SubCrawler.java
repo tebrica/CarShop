@@ -1,31 +1,26 @@
 package com.example.carstore;
 
 import android.os.AsyncTask;
-import android.os.Build;
 import android.util.Log;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class WebCrawler extends AsyncTask<String, Void, JSONArray> {
-    MainActivity mainActivity;
-    public WebCrawler(MainActivity ma){
-        mainActivity = ma;
+public class SubCrawler extends AsyncTask<String, Void, JSONArray> {
+    public SubCrawler(){
+
     }
     @Override
     protected JSONArray doInBackground(String... urls) {
@@ -64,9 +59,9 @@ public class WebCrawler extends AsyncTask<String, Void, JSONArray> {
 
                 JSONObject j1 = result.getJSONObject("props");
                 JSONObject j2 = j1.getJSONObject("pageProps");
-                JSONObject j3 = j2.getJSONObject("searchResult");
-                JSONObject j4 = j3.getJSONObject("advertSummaryList");
-                JSONArray advertSummaryList =  j4.getJSONArray("advertSummary");
+                JSONObject j3 = j2.getJSONObject("advertDetails");
+                JSONObject j4 = j3.getJSONObject("advertContactDetails");
+                JSONArray advertSummaryList =  j4.getJSONArray("contactDetail");
 
                 JSONArray returnArray = new JSONArray();
 
@@ -112,50 +107,9 @@ public class WebCrawler extends AsyncTask<String, Void, JSONArray> {
 
     @Override
     protected void onPostExecute(JSONArray result) {
-        try{
-            SimpleDateFormat outFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
-            String heading = "";
-            String price = "";
-            String url = "https://www.willhaben.at/iad/";
-            String imgUrl = "https://cache.willhaben.at/mmo/";
-            Date inDate = outFormatter.parse("2023-06-08T23:13:00Z");
-
-            if (result != null) {
-                List<Item> items = new ArrayList<Item>();
-                List<String> compare = new ArrayList<String>();
-
-                for (int i = 0; i < result.length(); i++) {
-                    JSONObject item = result.getJSONObject(i);
-
-                    try{
-                        heading = item.getString("heading");
-                        price = item.getString("price/amount");
-                        imgUrl += item.getString("all_image_urls").split(";")[0];
-                        inDate = outFormatter.parse(item.getString("published_string"));
-                        url += item.getString("seo_url").split(";")[0];
-                    } catch (Exception e) {
-
-                    }
-                    items.add(new Item(heading, price, imgUrl, mainActivity, inDate, url));
-                    compare.add(heading);
-
-                    SubCrawler SubCrawler = new SubCrawler();
-                    SubCrawler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
-
-                    url = "https://www.willhaben.at/iad/";
-                    imgUrl = "https://cache.willhaben.at/mmo/";
-                }
-
-                mainActivity.initiate(items, compare);
-
-            } else {
-                // Handle error case
-            }
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+        if (result != null) {
+        } else {
+            // Handle error case
         }
     }
 }
